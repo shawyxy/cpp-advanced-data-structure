@@ -164,10 +164,65 @@
 //}
 //#include <iostream>
 //using namespace std;
-#include "test.h"
+//#include "test.h"
+//
+//int main()
+//{
+//	cout << min(2, 1) << endl;
+//	return 0;
+//}
+//#include <iostream>
+//void func()
+//{
+//	auto b[] = { 1,2,3 };
+//}
+//int main()
+//{
+//	int a = 10;
+//	int& ra = a;
+//
+//	auto b = 10; // int
+//	auto c = &a; // int*
+//	auto* cc = &a; // 强调只能是指针
+//	auto d = a;  // int&
+//	auto& dd = a; //强调只能是引用
+//	
+//	return 0;
+//}
+//#include <iostream>
+//using namespace std;
+//int main()
+//{
+//	int a[] = { 1,2,3 };
+//
+//	for (auto e : a)
+//	{
+//		e++;
+//	}
+//	for (auto e : a)
+//	{
+//		cout << e << " ";
+//	}
+//	cout << endl;
+//	for (auto& e : a)
+//	{
+//		e++;
+//	}
+//	for (auto e : a)
+//	{
+//		cout << e << " ";
+//	}
+//	return 0;
+//}
+#include <iostream>
+using namespace std;
+void f(int) { cout << "int" << endl; }
 
-int main()
-{
-	cout << min(2, 1) << endl;
-	return 0;
+void f(int*) { cout << "int*" << endl; }
+
+int main() {
+    f(0);
+    f(NULL);
+    f((int*)NULL);
+    return 0;
 }
