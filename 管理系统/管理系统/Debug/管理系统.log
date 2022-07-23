@@ -1,0 +1,5 @@
+﻿  test.c
+X:\CC++_code\cpp-advanced-data-structure\管理系统\管理系统\test.c(90,6): warning C4101: “n”: 未引用的局部变量
+X:\CC++_code\cpp-advanced-data-structure\管理系统\管理系统\test.c(219,7): warning C4101: “c”: 未引用的局部变量
+X:\CC++_code\cpp-advanced-data-structure\管理系统\管理系统\test.c(260,9): warning C4101: “j”: 未引用的局部变量
+  管理系统.vcxproj -> X:\CC++_code\cpp-advanced-data-structure\管理系统\Debug\管理系统.exe

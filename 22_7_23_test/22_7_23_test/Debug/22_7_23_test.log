@@ -1,0 +1,5 @@
+﻿  Inline.cpp
+  test.cpp
+  正在生成代码...
+test.obj : error LNK2019: 无法解析的外部符号 "int __cdecl min(int,int)" (?min@@YAHHH@Z)，函数 _main 中引用了该符号
+X:\CC++_code\cpp-advanced-data-structure\22_7_23_test\Debug\22_7_23_test.exe : fatal error LNK1120: 1 个无法解析的外部命令
