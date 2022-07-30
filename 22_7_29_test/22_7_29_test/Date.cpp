@@ -17,16 +17,16 @@ int Date::GetYear()
 {
 	return _year;
 }
-int main()
-{
-	Date date2;
-	//	通过公有成员函数访问私有成员变量
-	date2.SetYear(2021);
-	cout << date2.GetYear() << endl;
-	//直接访问私有成员变量不可行
-	//date2._year = 2022;
-	return 0;
-}
+//int main()
+//{
+//	Date date2;
+//	//	通过公有成员函数访问私有成员变量
+//	date2.SetYear(2021);
+//	cout << date2.GetYear() << endl;
+//	//直接访问私有成员变量不可行
+//	//date2._year = 2022;
+//	return 0;
+//}
 
 //class Date
 //{
