@@ -65,7 +65,6 @@ Date& Date::operator+=(int day)
 }
 Date Date::operator+(int day)
 {
-    //Date ret(*this);
     Date ret = *this;
     ret += day;
 
