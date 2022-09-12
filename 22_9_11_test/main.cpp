@@ -99,14 +99,13 @@ void test7()
 void test8()
 {
     string s1 = "hello";
-    string::iterator b = s1.begin();
-    string::iterator e = s1.end();
 
-    cout << s1.find('e') << endl;
+    cout << s1.find('o') << endl;
+    cout << s1.find('o', 5) << endl;
+
+    cout << s1.find('p') << endl;
 
     cout << string::npos << endl;
-
-
 }
 int main()
 {
