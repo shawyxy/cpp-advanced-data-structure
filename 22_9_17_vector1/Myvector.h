@@ -18,7 +18,14 @@ namespace xy {
         //vector的空间是由指针维护的
         typedef T *iterator;
         typedef const T *const_iterator;
-
+        void Print()
+        {
+            for(size_t i = 0; i < size(); i++)
+            {
+                cout << _start[i] << " ";
+            }
+            cout << endl;
+        }
         //迭代器
         iterator begin() {
             return _start;
@@ -186,7 +193,8 @@ namespace xy {
             }
         }
 
-        iterator insert(iterator pos, const T &x) {
+        iterator insert(size_t n, const T &x) {
+            iterator pos = begin() + n;
             assert(pos <= _finish);
 
             if (size() == capacity())//扩容
@@ -209,7 +217,7 @@ namespace xy {
         }
 
         void push_back(const T &x) {
-            insert(end(), x);
+            insert(0, x);
         }
 
         void pop_back() {
@@ -236,68 +244,6 @@ namespace xy {
         iterator _end_of_storage;//容量的末尾
     };
 
-    void Test1() {
-        xy::vector<int> v1;
-        //xy::vector<int> v2(10, 5);
 
-        int array[] = {1, 2, 3, 4, 5};
-        xy::vector<int> v3(array, array + sizeof(array) / sizeof(array[0]));
-
-        xy::vector<int> v4(v3);
-
-//        for (size_t i = 0; i < v2.size(); ++i) {
-//            cout << v2[i] << " ";
-//        }
-        cout << endl;
-
-        auto it = v3.begin();
-        while (it != v3.end()) {
-            cout << *it << " ";
-            ++it;
-        }
-        cout << endl;
-
-        for (auto e: v4) {
-            cout << e << " ";
-        }
-        cout << endl;
-    }
-
-//    void Test2() {
-//        xy::vector<int> v;
-//        v.push_back(1);
-//        v.push_back(2);
-//        v.push_back(3);
-//        v.push_back(4);
-//        v.push_back(5);
-//        cout << v.size() << endl;
-//        cout << v.capacity() << endl;
-//        cout << v.front() << endl;
-//        cout << v.back() << endl;
-//        cout << v[0] << endl;
-//        for (auto e: v) {
-//            cout << e << " ";
-//        }
-//        cout << endl;
-//
-//        v.pop_back();
-//        v.pop_back();
-//        for (auto e: v) {
-//            cout << e << " ";
-//        }
-//        cout << endl;
-//
-//        v.insert(v.begin(), 0);
-//        for (auto e: v) {
-//            cout << e << " ";
-//        }
-//        cout << endl;
-//
-//        v.erase(v.begin() + 1);
-//        for (auto e: v) {
-//            cout << e << " ";
-//        }
-//        cout << endl;
-//    }
 }
 
