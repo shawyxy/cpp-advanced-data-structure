@@ -16,8 +16,8 @@ namespace xy {
     class vector {
     public:
         //vector的空间是由指针维护的
-        typedef T *iterator;
-        typedef const T *const_iterator;
+        typedef T* iterator;
+        typedef const T* const_iterator;
         void Print()
         {
             for(size_t i = 0; i < size(); i++)
@@ -125,11 +125,25 @@ namespace xy {
         }
 
         //构造n个val值
-        vector(size_t n, const T &val = T())//这里的T()是T类型的默认构造
-                : _start(nullptr), _finish(nullptr), _end_of_storage(nullptr) {
-            reserve(n);
-            for (size_t i = 0; i < n; i++) {
-                _start[i] = val;
+//        vector(size_t n, const T &val = T())//这里的T()是T类型的默认构造
+//                : _start(nullptr), _finish(nullptr), _end_of_storage(nullptr) {
+//            reserve(n);
+//            for (size_t i = 0; i < n; i++) {
+//                _start[i] = val;
+//            }
+//        }
+        vector(int n, const T& val = T())
+                :_start(nullptr)
+                , _finish(nullptr)
+                , _end_of_storage(nullptr)
+        {
+            _start = new T[n];
+            _finish = _start;
+            _end_of_storage = _start + n;
+            //对申请的空间初始化
+            for (int i = 0; i < n; i++)
+            {
+                *_finish++ = val;
             }
         }
 
@@ -193,8 +207,8 @@ namespace xy {
             }
         }
 
-        iterator insert(size_t n, const T &x) {
-            iterator pos = begin() + n;
+        iterator insert(iterator pos, const T &x) {
+
             assert(pos <= _finish);
 
             if (size() == capacity())//扩容
@@ -217,7 +231,7 @@ namespace xy {
         }
 
         void push_back(const T &x) {
-            insert(0, x);
+            insert(end(), x);
         }
 
         void pop_back() {
@@ -226,13 +240,13 @@ namespace xy {
         }
 
         //返回值是要删除的位置
-        iterator erase(iterator pos, const T &x) {
+        iterator erase(iterator pos) {
             iterator end = pos + 1;
             while (end >= pos) {
                 *(end + 1) = *end;
                 end--;
             }
-            *pos = x;
+
             _finish--;
 
             return pos;
@@ -243,7 +257,5 @@ namespace xy {
         iterator _finish;//元素末尾
         iterator _end_of_storage;//容量的末尾
     };
-
-
 }
 
