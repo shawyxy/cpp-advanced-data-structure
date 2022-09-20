@@ -18,6 +18,7 @@ namespace xy {
         //vector的空间是由指针维护的
         typedef T* iterator;
         typedef const T* const_iterator;
+        //实际上STL中并没有,这里是为了方便打印
         void Print()
         {
             for(size_t i = 0; i < size(); i++)
@@ -97,7 +98,10 @@ namespace xy {
         //1.无参
         //由于初始化的重要性,使用初始化列表
         vector()
-                : _start(nullptr), _finish(nullptr), _end_of_storage(nullptr) {}
+                : _start(nullptr)
+                , _finish(nullptr)
+                , _end_of_storage(nullptr)
+                {}
 
         //2.有参
         //v2(v1)
@@ -119,7 +123,9 @@ namespace xy {
         //v2(v1)
         //新写法1
         vector(const vector<T>& v)
-                : _start(nullptr), _finish(nullptr), _end_of_storage(nullptr) {
+                : _start(nullptr)
+                , _finish(nullptr)
+                , _end_of_storage(nullptr) {
             vector<T> tmp = v;
             swap(tmp);
         }
@@ -186,6 +192,7 @@ namespace xy {
                 _finish = _start + len;
                 _end_of_storage = _start + n;
             }
+
         }
 
         void resize(size_t n, const T &val) {

@@ -120,7 +120,7 @@ int main()
     //test2();
 
     TestXyVector1();
-    //cout << "-------------"<< endl;
-    //TestXyVector2();
+    cout << "-------------"<< endl;
+    TestXyVector2();
     return 0;
 }
