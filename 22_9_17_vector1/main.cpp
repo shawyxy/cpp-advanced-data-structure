@@ -1,3 +1,4 @@
+#include <vector>
 #include "Myvector.h"
 
 //void test1()
@@ -33,10 +34,10 @@ void TestXyVector1()
     xy::vector<int> v3(array, array+sizeof(array)/sizeof(array[0]));
 
     xy::vector<int> v4(v3);
-
-    for (size_t i = 0; i < v2.size(); ++i)
+    v2.Print();
+    for (auto i : v2)
     {
-        cout << v2[i] << " ";
+        cout << i << " ";
     }
     cout << endl;
 
@@ -114,13 +115,33 @@ void test2()
     cout << v.capacity() << endl;
 
 }
+void test3()
+{
+    //
+    std::vector<int> v = {1, 2, 3, 4};
+    auto it = v.begin();
+    v.resize(100, 0);
+    while(it != v.end())
+    {
+        cout << *it << " ";
+        it++;
+    }
+    cout << endl;
+}
+void test4()
+{
+    xy::vector<string> v1;
+    v1.push_back("hello");
 
+    xy::vector<string> v2(v1);
+
+}
 int main()
 {
-    //test2();
+    test4();
 
-    TestXyVector1();
-    cout << "-------------"<< endl;
-    TestXyVector2();
+//    TestXyVector1();
+//    cout << "-------------"<< endl;
+//    TestXyVector2();
     return 0;
 }

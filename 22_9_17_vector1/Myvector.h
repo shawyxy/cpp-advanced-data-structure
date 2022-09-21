@@ -106,38 +106,41 @@ namespace xy {
         //2.有参
         //v2(v1)
         //传统写法
-//        vector(const vector<T>& v)
-//                :_start(nullptr)
-//                , _finish(nullptr)
-//                , _end_of_storage(nullptr)
-//        {
-//            _start = new T[v.size()];//开相同大小的内存
-//            //memcpy(_start, v._start, v.size());
+        vector(const vector<T>& v)
+                :_start(nullptr)
+                , _finish(nullptr)
+                , _end_of_storage(nullptr)
+        {
+            _start = new T[v.size()];//开相同大小的内存
+            memcpy(_start, v._start, v.size());
 //            for(size_t i = 0; i < v.size(); i++)//拷贝数据
 //            {
 //                _start[i] = v._start[i];
 //            }
-//            _finish = _start + v.size();
-//            _end_of_storage = _start + v.capacity();
-//        }
+            _finish = _start + v.size();
+            _end_of_storage = _start + v.capacity();
+        }
         //v2(v1)
         //新写法1
-        vector(const vector<T>& v)
+//        vector(const vector<T>& v)
+//                : _start(nullptr)
+//                , _finish(nullptr)
+//                , _end_of_storage(nullptr) {
+//            vector<T> tmp = v;
+//            swap(tmp);
+//        }
+
+        //构造n个val值
+        vector(size_t n, const T& val = T())//这里的T()是T类型的默认构造
                 : _start(nullptr)
                 , _finish(nullptr)
                 , _end_of_storage(nullptr) {
-            vector<T> tmp = v;
-            swap(tmp);
-        }
-
-        //构造n个val值
-//        vector(size_t n, const T &val = T())//这里的T()是T类型的默认构造
-//                : _start(nullptr), _finish(nullptr), _end_of_storage(nullptr) {
 //            reserve(n);
 //            for (size_t i = 0; i < n; i++) {
 //                _start[i] = val;
 //            }
-//        }
+                resize(n, val);
+        }
         vector(int n, const T& val = T())
                 :_start(nullptr)
                 , _finish(nullptr)
@@ -151,7 +154,10 @@ namespace xy {
             {
                 *_finish++ = val;
             }
+            //resize(n, val);
+
         }
+
 
         //任意容器的迭代器区间构造
         template<class InputIterator>
@@ -195,7 +201,7 @@ namespace xy {
 
         }
 
-        void resize(size_t n, const T &val) {
+        void resize(size_t n, const T &val = T()) {
             //1.要修改的容量小于当前元素个数
             if (n < size()) {
                 _finish = _start + n;//将个数更新到第n个
