@@ -258,23 +258,23 @@
 //}
 //
 //
-//#include<stdio.h> //若用printf,scanf,getchar,putchar,gets,puts函数需包含该头文件
-//#include<stdlib.h> //用malloc,free,realloc函数需包含该头文件
-//
-//#define MAXSIZE 100 //设线性表初始分配空间大小
-//typedef int ElemType;  //先设定数据元素的类型为整型
-//
-////0：定义顺序表的结构类型
-//typedef struct{
+// #include<stdio.h> //若用printf,scanf,getchar,putchar,gets,puts函数需包含该头文件
+// #include<stdlib.h> //用malloc,free,realloc函数需包含该头文件
+
+// #define MAXSIZE 100 //设线性表初始分配空间大小
+// typedef int ElemType;  //先设定数据元素的类型为整型
+
+// //0：定义顺序表的结构类型
+// typedef struct{
 //    ElemType *elem;
 //    int length;
 //    int listsize;
-//}SqList;
-//
-//int ListInsert_Sq(SqList &L,int i,ElemType e){
+// }SqList;
+
+// int ListInsert_Sq(SqList &L,int i,ElemType e){
 //    if (i<1 || i>L.length+1)
 //        return 0;
-////--------补充代码--Start------
+// //--------补充代码--Start------
 //    if(L.length >= MAXSIZE)
 //        return 0;
 //     int end = L.length;
@@ -285,122 +285,122 @@
 //     }
 //     L.elem[i - 1] = e;
 //     L.length++;
-//
-////--------补充代码--End-------
+
+// //--------补充代码--End-------
 //    return 1;
-//}
-////1：初始化顺序表
-//int InitList_Sq(SqList &L )
-//{
+// }
+// //1：初始化顺序表
+// int InitList_Sq(SqList &L )
+// {
 //    L.elem=(ElemType*)malloc(sizeof(ElemType)*MAXSIZE);
 //    if (!L.elem) return 0;
 //    L.length=0;
 //    L.listsize=MAXSIZE;
 //    return 1;
-//}
-//
-////2：打印顺序表中所有元素
-//void PrintList(SqList &L)
-//{
+// }
+
+// //2：打印顺序表中所有元素
+// void PrintList(SqList &L)
+// {
 //    int i;
 //    for(i=0;i<L.length;i++)
 //        printf("%d\n",L.elem[i]);
-//}
-//
-////3：合并两个有序的顺序表，La,Lb有序，合并到Lc
-//void MergeList(SqList La, SqList Lb, SqList &Lc)
-//{
-////--------补充代码--Start------
+// }
+
+// //3：合并两个有序的顺序表，La,Lb有序，合并到Lc
+// void MergeList(SqList La, SqList Lb, SqList &Lc)
+// {
+// //--------补充代码--Start------
 //    int i = 0, j = 0, k = 0;
 //    while(i < La.length&&j < Lb.length){
 //        if(La.elem[i] < Lb.elem[j]){
 //            ListInsert_Sq(Lc,++k,La.elem[i++]);
-//
+
 //        }else{
 //            ListInsert_Sq(Lc,++k,Lb.elem[j++]);
-//
+
 //        }
 //    }
 //    while(i < La.length)
 //        ListInsert_Sq(Lc,++k,La.elem[i++]);
 //    while(j < Lb.length)
 //        ListInsert_Sq(Lc,++k,Lb.elem[j++]);
-//
-////--------补充代码--End-------
-//}
-//
-////主函数
-//int main()
-//{
-////以下代码请认真阅读，切勿做任何修改
-////将list[0]和list[1]合并到list[2]
+
+// //--------补充代码--End-------
+// }
+
+// //主函数
+// int main()
+// {
+// //以下代码请认真阅读，切勿做任何修改
+// //将list[0]和list[1]合并到list[2]
 //    SqList list[3];
 //    int i,k,n,e;
-//
-////构造2个数据表
+
+// //构造2个数据表
 //    for(k=0;k<2;k++)
 //    {
-////初始化顺序表list 1,2
+// //初始化顺序表list 1,2
 //        InitList_Sq(list[k]);
-////有序输入第k个顺序表数据元素个数
+// //有序输入第k个顺序表数据元素个数
 //        scanf("%d",&n);
-////依次读取n个数据插入顺序表
+// //依次读取n个数据插入顺序表
 //        for(i=0;i<n;i++)
 //        {
-////输入数据元素
+// //输入数据元素
 //            scanf("%d",&e);
-////插入顺序表
+// //插入顺序表
 //            list[k].elem[i]=e;
 //        }
-////数据元素个数赋值
+// //数据元素个数赋值
 //        list[k].length=n;
 //    }
-////初始化顺序表list 3
+// //初始化顺序表list 3
 //    InitList_Sq(list[2]);
-//
-////-----------------------------------
-////执行合并操作
+
+// //-----------------------------------
+// //执行合并操作
 //    MergeList(list[0], list[1], list[2]);
-////按顺序输出顺序表list[3]中元素
+// //按顺序输出顺序表list[3]中元素
 //    PrintList(list[2]);
 //    return 0;
-//}
-//#include<stdio.h> //若用printf,scanf,getchar,putchar,gets,puts函数需包含该头文件
-//#include<stdlib.h> //用malloc,free,realloc函数需包含该头文件
-//
-//#define MAXSIZE 100 //设线性表初始分配空间大小
-//typedef int ElemType;  //先设定数据元素的类型为整型
-//
-////0：定义顺序表的结构类型
-//typedef struct{
+// }
+// #include<stdio.h> //若用printf,scanf,getchar,putchar,gets,puts函数需包含该头文件
+// #include<stdlib.h> //用malloc,free,realloc函数需包含该头文件
+
+// #define MAXSIZE 100 //设线性表初始分配空间大小
+// typedef int ElemType;  //先设定数据元素的类型为整型
+
+// //0：定义顺序表的结构类型
+// typedef struct{
 //    ElemType *elem;
 //    int length;
 //    int listsize;
-//}SqList;
-//
-////1：初始化顺序表
-//int InitList_Sq(SqList &L )
-//{
+// }SqList;
+
+// //1：初始化顺序表
+// int InitList_Sq(SqList &L )
+// {
 //    L.elem=(ElemType*)malloc(sizeof(ElemType)*MAXSIZE);
 //    if (!L.elem) return 0;
 //    L.length=0;
 //    L.listsize=MAXSIZE;
 //    return 1;
-//}
-//
-////2：打印顺序表中所有元素
-//void PrintList(SqList &L)
-//{
+// }
+
+// //2：打印顺序表中所有元素
+// void PrintList(SqList &L)
+// {
 //    int i;
 //    for(i=0;i<L.length;i++)
 //        printf("%d\n",L.elem[i]);
-//}
-//
-////*****3：在顺序表中第i个位置(i=1~n)插入元素*****
-//int ListInsert_Sq(SqList &L,int i,ElemType e){
+// }
+
+// //*****3：在顺序表中第i个位置(i=1~n)插入元素*****
+// int ListInsert_Sq(SqList &L,int i,ElemType e){
 //    if (i<1 || i>L.length+1)
 //        return 0;
-////--------补充代码--Start------
+// //--------补充代码--Start------
 //    if(L.length >= MAXSIZE)
 //        return 0;
 //     int end = L.length;
@@ -411,16 +411,16 @@
 //     }
 //     L.elem[i - 1] = e;
 //     L.length++;
-//
-////--------补充代码--End-------
+
+// //--------补充代码--End-------
 //    return 1;
-//}
-//
-////*****4：删除顺序表中第i(i=1~n)个元素，用e返回删除的元素*****
-//int ListDelete_Sq(SqList &L, int i, ElemType &e)
-//{
-////--------补充代码--Start------
-//if(i > L.length || i < 1)
+// }
+
+// //*****4：删除顺序表中第i(i=1~n)个元素，用e返回删除的元素*****
+// int ListDelete_Sq(SqList &L, int i, ElemType &e)
+// {
+// //--------补充代码--Start------
+// if(i > L.length || i < 1)
 //        return 0;
 //    e = L.elem[i - 1];
 //    int begin = i;
@@ -430,41 +430,48 @@
 //        begin++;
 //    }
 //    L.length--;
-////--------补充代码--End-------
+// //--------补充代码--End-------
 //    return 1;
-//}
-//
-////主函数
-//int main()
-//{
-////以下代码请认真阅读，切勿做任何修改
+// }
+
+// //主函数
+// int main()
+// {
+// //以下代码请认真阅读，切勿做任何修改
 //    SqList La;
 //    int i,n,e;
-//
-////初始化顺序表
+
+// //初始化顺序表
 //    InitList_Sq(La);
-////输入元素个数
+// //输入元素个数
 //    scanf("%d",&n);
-////依次读取n个数据插入顺序表
+// //依次读取n个数据插入顺序表
 //    for(i=1; i<=n; i++)
 //    {
-////输入数据元素
+// //输入数据元素
 //        scanf("%d",&e);
-////插入顺序表
+// //插入顺序表
 //        ListInsert_Sq(La,i,e);
 //    }
-////按顺序输出顺序表中元素
+// //按顺序输出顺序表中元素
 //    PrintList(La);
-//
-////----------------------------
-////输入要删除元素的位置
+
+// //----------------------------
+// //输入要删除元素的位置
 //    scanf("%d",&i);
-////执行删除
+// //执行删除
 //    ListDelete_Sq(La,i,e);
-////输出删除后的元素
+// //输出删除后的元素
 //    printf("%d\n",e);
-////输出删除后的顺序表的内容
+// //输出删除后的顺序表的内容
 //    PrintList(La);
 //    printf("%d\n",La.length);
 //    return 0;
-//}
+// }
+#include <iostream>
+using namespace std;
+int main()
+{
+   cout << "hello " << endl;
+   return 0;
+}
