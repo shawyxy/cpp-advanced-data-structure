@@ -1,8 +1,9 @@
+#define _CRT_SECURE_NO_WARNINGS 1
 #include <iostream>
 #include <list>
 #include <vector>
 #include <algorithm>
-
+#include <assert.h>
 using namespace std;
 
 namespace xy {
@@ -10,12 +11,12 @@ namespace xy {
     template<class T>
     struct _list_node {
         //成员变量
-        _list_node *_prev;
-        _list_node *_next;
+        _list_node* _prev;
+        _list_node* _next;
         T val;
 
         //成员函数
-        _list_node(const T &x = T())
+        _list_node(const T& x = T())
                 : _prev(nullptr), _next(nullptr), val(x) {}
     };
 
@@ -24,35 +25,27 @@ namespace xy {
     //为了无感地使用这些操作符,需要重载
     template<class T, class Ref, class Ptr>
     struct _list_iterator {
-        //普通迭代器(非const)
-        typedef _list_iterator<T, T &, T *> iterator;
-        //const迭代器
-        typedef _list_iterator<T, const T &, const T *> const_iterator;
+        typedef _list_iterator<T, Ref, Ptr> Self;
         //返回引用类型
         typedef Ref reference;
         //返回指针类型
         typedef Ptr pointer;
-        //迭代器的构造函数
+        //定义结点
         typedef _list_node<T> Node;
-        Node *_node;
-
-        _list_iterator(Node *node)
+        Node* _node;
+        //迭代器的构造函数
+        _list_iterator(Node* node)
                 : _node(node) {}
 
         //重载运算符
         //判断头结点指针是否相同
-        bool operator==(iterator &it) const {
+        bool operator==(const Self& it) const {
             return _node == it._node;
         }
 
-        bool operator!=(const_iterator &it) const {
+        bool operator!=(const Self& it) const {
             return _node != it._node;
         }
-
-        bool operator!=(const iterator &it) const {
-            return _node != it._node;
-        }
-
         //对于指针是解引用*访问数据,但是对于链表指针解引用访问的是
         //整个结点,所以返回结点的数据val
         reference operator*() {
@@ -65,31 +58,30 @@ namespace xy {
         }
 
         //前置++
-        iterator &operator++() {
+        Self& operator++() {
             _node = _node->_next;
             return *this;
         }
 
         //后置++
-        iterator operator++(int) {
-            iterator tmp = _node;
+        Self operator++(int) {
+            Self ret(*this);
             _node = _node->_next;
-            return tmp;
+            return ret;
         }
 
         //前置--
-        iterator &operator--() {
+        Self& operator--() {
             _node = _node->_prev;
             return *this;
         }
 
         //后置--
-        iterator operator--(int) {
-            iterator tmp = _node;
+        Self operator--(int) {
+            Self tmp(*this);
             _node = _node->_prev;
             return tmp;
         }
-
     };
 
     //模拟实现list
@@ -98,6 +90,10 @@ namespace xy {
     public:
         typedef _list_node<T> Node;//定义结点类型
 
+        //迭代器
+    public:
+        typedef _list_iterator<T, T&, T*> iterator;
+        typedef _list_iterator<T, const T&, const T*> const_iterator;
         //默认成员函数:
         //构造,析构,operator=
         list() {
@@ -105,13 +101,7 @@ namespace xy {
         }
 
         //批量构造
-        list(int n, const T &val = T()) {
-            CreateHead();
-            for (int i = 0; i < n; ++i)
-                push_back(val);
-        }
-
-        list(size_t n, const T &val = T()) {
+        list(int n, const T& val = T()) {
             CreateHead();
             for (int i = 0; i < n; ++i)
                 push_back(val);
@@ -129,7 +119,7 @@ namespace xy {
 
         //template <class Iterator>
         //拷贝构造
-        list(const list<T> &ls) {
+        list(list<T>& ls) {
             CreateHead();
             list<T> tmp(ls.begin(), ls.end());
             swap(tmp);
@@ -143,16 +133,11 @@ namespace xy {
         }
 
         //重载operator=
-        list<T> &operator=(list<T> ls) {
+        list<T>& operator=(list<T> ls) {
             swap(ls);
             return *this;
         }
-
-        //迭代器
-    public:
-        typedef _list_iterator<T, T &, T *> iterator;
-        typedef _list_iterator<T, const T &, const T *> const_iterator;
-
+        //迭代器相关
         iterator begin() {
             return iterator(_head->_next);
         }
@@ -170,29 +155,29 @@ namespace xy {
         }
 
         //访问容器
-        T &front() {
+        T& front() {
             return _head->val;
         }
 
-        T &back() {
+        T& back() {
             return _head->_prev->val;
         }
 
-        const T &front() const {
+        const T& front() const {
             return _head->val;
         }
 
-        const T &back() const {
+        const T& back() const {
             return _head->_prev->val;
         }
 
         //插入和删除
-        iterator insert(iterator pos, const T &x) {
+        iterator insert(iterator pos, const T& x) {
             //prev (pos,newnode) cur
-
-            Node *cur = pos._node;
-            Node *prev = cur->_prev;
-            Node *newnode = new Node(x);
+            assert(pos._node);
+            Node* cur = pos._node;
+            Node* prev = cur->_prev;
+            Node* newnode = new Node(x);
             //prev<-->newnode
             prev->_next = newnode;
             newnode->_prev = prev;
@@ -203,16 +188,16 @@ namespace xy {
             return iterator(newnode);//返回插入位置的迭代器
         }
 
-        void push_back(const T &x) {
+        void push_back(const T& x) {
             insert(end(), x);
         }
 
-        void push_front(const T &x) {
+        void push_front(const T& x) {
             insert(begin(), x);
         }
 
         void pop_back() {
-            erase(end());
+            erase(--end());
         }
 
         void pop_front() {
@@ -220,15 +205,15 @@ namespace xy {
         }
 
         //交换函数
-        void swap(const list<int> &ls) {
-            list<int> tmp = ls;
-            std::swap(tmp._head, _head);
+        void swap(list<int>& ls) {
+            //xy::list<int> tmp = ls;//这里不能这样写，因为=重载也是调用swap的。
+            std::swap(ls._head, _head);
         }
 
         iterator erase(iterator pos) {
             //prev del(pos) next
-            Node *delNode = pos._node;
-            Node *retNode = delNode->_next;
+            Node* delNode = pos._node;
+            Node* retNode = delNode->_next;
 
             //删除delNode
             delNode->_prev->_next = delNode->_next;
@@ -242,7 +227,7 @@ namespace xy {
         //清除操作
         void clear() {
             //_head cur next
-            Node *cur = _head->_next;
+            Node* cur = _head->_next;
             while (cur != _head) {
                 _head->_next = cur->_next;
                 delete cur;
@@ -268,7 +253,7 @@ namespace xy {
             return begin() == end();
         }
 
-        void resize(size_t newsize, const T &data = T()) {
+        void resize(size_t newsize, const T& data = T()) {
             size_t oldsize = size();
             if (newsize <= oldsize) {
                 // 有效元素个数减少到newsize
@@ -276,7 +261,8 @@ namespace xy {
                     pop_back();
                     oldsize--;
                 }
-            } else {
+            }
+            else {
                 while (oldsize < newsize) {
                     push_back(data);
                     oldsize++;
@@ -285,7 +271,7 @@ namespace xy {
         }
 
     private:
-        Node *_head;//指向头结点的指针
+        Node* _head;//指向头结点的指针
         //把头结点初始化函数设为私有,然后让它作为默认构造函数的一部分
         void CreateHead() {
             _head = new Node;
@@ -295,10 +281,10 @@ namespace xy {
 
     };
 
-    ////////////_TEST_/////////////
+    //////////// __TEST__ /////////////
     // 打印
     template<class T>
-    void PrintList(const xy::list<T>& l)
+    void PrintList(const list<T>& l)
     {
         auto it = l.begin();
         while (it != l.end())
@@ -309,51 +295,26 @@ namespace xy {
 
         cout << endl;
     }
-    void test1() {
-        list<int> ls;
-        ls.push_back(1);
-        ls.push_back(2);
-        ls.push_back(3);
-        ls.push_back(4);
-        ls.push_back(5);
-        //PrintList(ls);
-        for (xy::list<int>::iterator it = ls.begin(); it != ls.end(); it++) {
-            cout << *it << " ";
-        }
-        cout << endl;
-    }
-
-// 测试List的构造
-    void test2() {
+    // 测试List的构造
+    void test1()
+    {
         xy::list<int> l1;
         xy::list<int> l2(10, 5);
-        for (xy::list<int>::iterator it = l2.begin(); it != l2.end(); it++) {
-            cout << *it << " ";
-        }
-        cout << endl;
+        PrintList(l2);
 
-        int array[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
+        int array[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
         xy::list<int> l3(array, array + sizeof(array) / sizeof(array[0]));
-        for (xy::list<int>::iterator it = l3.begin(); it != l3.end(); it++) {
-            cout << *it << " ";
-        }
-        cout << endl;
+        PrintList(l3);
 
         xy::list<int> l4(l3);
-        for (xy::list<int>::iterator it = l4.begin(); it != l4.end(); it++) {
-            cout << *it << " ";
-        }
-        cout << endl;
+        PrintList(l4);
 
         l1 = l4;
-        for (xy::list<int>::iterator it = l1.begin(); it != l1.end(); it++) {
-            cout << *it << " ";
-        }
-        cout << endl;
+        PrintList(l1);
     }
 
 // PushBack()/PopBack()/PushFront()/PopFront()
-    void test3()
+    void test2()
     {
         // 测试PushBack与PopBack
         xy::list<int> l;
@@ -384,7 +345,7 @@ namespace xy {
     }
 
 // 测试insert和erase
-    void test4()
+    void test3()
     {
         int array[] = { 1, 2, 3, 4, 5 };
         xy::list<int> l(array, array + sizeof(array) / sizeof(array[0]));
@@ -411,5 +372,5 @@ namespace xy {
         }
         cout << l.size() << endl;
     }
-}
 
+}
