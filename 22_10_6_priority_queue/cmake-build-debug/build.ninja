@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: 22_10_6_stack
+# Project: 22_10_6_priority_queue
 # Configurations: Debug
 # =============================================================================
 
@@ -39,44 +39,44 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_stack/cmake-build-debug/
+cmake_ninja_workdir = /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_priority_queue/cmake-build-debug/
 # =============================================================================
-# Object build statements for EXECUTABLE target 22_10_6_stack
+# Object build statements for EXECUTABLE target 22_10_6_priority_queue
 
 
 #############################################
-# Order-only phony target for 22_10_6_stack
+# Order-only phony target for 22_10_6_priority_queue
 
-build cmake_object_order_depends_target_22_10_6_stack: phony || CMakeFiles/22_10_6_stack.dir
+build cmake_object_order_depends_target_22_10_6_priority_queue: phony || CMakeFiles/22_10_6_priority_queue.dir
 
-build CMakeFiles/22_10_6_stack.dir/main.cpp.o: CXX_COMPILER__22_10_6_stack_Debug /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_stack/main.cpp || cmake_object_order_depends_target_22_10_6_stack
-  DEP_FILE = CMakeFiles/22_10_6_stack.dir/main.cpp.o.d
+build CMakeFiles/22_10_6_priority_queue.dir/main.cpp.o: CXX_COMPILER__22_10_6_priority_queue_Debug /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_priority_queue/main.cpp || cmake_object_order_depends_target_22_10_6_priority_queue
+  DEP_FILE = CMakeFiles/22_10_6_priority_queue.dir/main.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++14
-  OBJECT_DIR = CMakeFiles/22_10_6_stack.dir
-  OBJECT_FILE_DIR = CMakeFiles/22_10_6_stack.dir
+  OBJECT_DIR = CMakeFiles/22_10_6_priority_queue.dir
+  OBJECT_FILE_DIR = CMakeFiles/22_10_6_priority_queue.dir
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target 22_10_6_stack
+# Link build statements for EXECUTABLE target 22_10_6_priority_queue
 
 
 #############################################
-# Link the executable 22_10_6_stack
+# Link the executable 22_10_6_priority_queue
 
-build 22_10_6_stack: CXX_EXECUTABLE_LINKER__22_10_6_stack_Debug CMakeFiles/22_10_6_stack.dir/main.cpp.o
+build 22_10_6_priority_queue: CXX_EXECUTABLE_LINKER__22_10_6_priority_queue_Debug CMakeFiles/22_10_6_priority_queue.dir/main.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk
-  OBJECT_DIR = CMakeFiles/22_10_6_stack.dir
+  OBJECT_DIR = CMakeFiles/22_10_6_priority_queue.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_FILE = 22_10_6_stack
-  TARGET_PDB = 22_10_6_stack.dbg
+  TARGET_FILE = 22_10_6_priority_queue
+  TARGET_PDB = 22_10_6_priority_queue.dbg
 
 
 #############################################
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_stack/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  COMMAND = cd /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_priority_queue/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -87,7 +87,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_stack/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_stack -B/Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_stack/cmake-build-debug
+  COMMAND = cd /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_priority_queue/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_priority_queue -B/Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_priority_queue/cmake-build-debug
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -103,9 +103,9 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 
 #############################################
-# Folder: /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_stack/cmake-build-debug
+# Folder: /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_6_priority_queue/cmake-build-debug
 
-build all: phony 22_10_6_stack
+build all: phony 22_10_6_priority_queue
 
 # =============================================================================
 # Built-in targets
