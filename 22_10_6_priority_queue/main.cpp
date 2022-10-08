@@ -33,10 +33,23 @@ void my_priority_queue_test()
     }
     cout << endl;
 }
+
+class Add
+{
+public:
+    int operator()(int& x, int& y)
+    {
+        return x + y;
+    }
+};
 int main()
 {
     STL_priority_queue_test();
     cout << "------------------" << endl;
     my_priority_queue_test();
+
+    int a  = 1, b = 2;
+    Add add;
+    cout << add(a, b) << endl;
     return 0;
 }
