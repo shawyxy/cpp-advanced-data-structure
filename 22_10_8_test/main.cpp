@@ -47,7 +47,7 @@ void Pop(Sqstack& s)
 
 //取栈顶元素
 int getTop(Sqstack& s) {
- return *(s.top - 1);
+ return *(s.top);
 }
 
 
@@ -72,7 +72,11 @@ int main()
  Initial(s);
  int num = 0;
 
-  push(s, num);
+ while(scanf("%d", &num) != EOF)
+ {
+     push(s,num);
+ }
+  //push(s, num);
 
  while (s.top != s.base)
  {
