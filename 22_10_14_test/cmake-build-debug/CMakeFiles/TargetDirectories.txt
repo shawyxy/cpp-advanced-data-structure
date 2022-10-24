@@ -1,3 +1,0 @@
-/Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_14_test/cmake-build-debug/CMakeFiles/22_10_14_test.dir
-/Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_14_test/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_10_14_test/cmake-build-debug/CMakeFiles/rebuild_cache.dir

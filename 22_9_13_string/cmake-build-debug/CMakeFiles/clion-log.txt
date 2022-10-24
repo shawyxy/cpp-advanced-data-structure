@@ -1,4 +1,0 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/ninja -G Ninja -S /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_9_13_string -B /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_9_13_string/cmake-build-debug
--- Configuring done
--- Generating done
--- Build files have been written to: /Users/man9o/Desktop/Code/C_C++_code/cpp-advanced-data-structure/22_9_13_string/cmake-build-debug
