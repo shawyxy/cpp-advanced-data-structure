@@ -262,36 +262,67 @@
 #include <iostream>
 #include <string>
 using namespace std;
-class A{
-    virtual void d()
-    {
-        cout << "d" << endl;
-    }
-};
-class b : public A{
-     void d()
-    {
-        cout << "b" << endl;
-    }
-};
-class c : public A{
-     void d()
-    {
-        cout << "c" << endl;
-    }
-};
+class Base{
+public:
+    Base(int j) : i(j) {}
 
-void func(A ptr)
-{
-    ptr.b();
-}
-int main()
-{
-    A a;
-    b b1;
-    c c1;
-    func(a);
-    func(b1);
-    func(b1);
-    return 0;
-}
+};
+//class A
+//{
+//    void test(float a)
+//    {
+//        cout << "1";
+//    }
+//};
+//class B : public A{
+//    void test(int b)
+//    {
+//        cout << "2";
+//    }
+//};
+//int main()
+//{
+//    A *a = new A;
+//    B *b = new B;
+//    a = b;
+//    a.test();
+//    return 0;
+//}
+//class A{
+//public:
+//    virtual void d()
+//    {
+//        cout << "d" << endl;
+//    }
+//};
+//class b : public A{
+//public:
+//
+//    void d()
+//    {
+//        cout << "b" << endl;
+//    }
+//};
+//class c : public A{
+//public:
+//
+//    void d()
+//    {
+//        cout << "c" << endl;
+//    }
+//};
+//
+//void func(A ptr)
+//{
+//    ptr.d();
+//}
+//int main()
+//{
+//    A a;
+//    b b1;
+//    c c1;
+//    func(a);
+//    func(b1);
+//    func(b1);
+//    return 0;
+//}
