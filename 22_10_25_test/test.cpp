@@ -32,7 +32,7 @@ struct A
     }
 };
 
-struct B
+struct B : A
 {
     /* data */
     void foo()
@@ -51,7 +51,7 @@ int main()
 //     A* a = new B;
 //     a->f();
 //     delete a;
-    A* p  = new B;
+    A* p  = new B();
     p->foo();
     p->bar();
     return 0;

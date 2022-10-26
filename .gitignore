@@ -623,3 +623,4 @@ FodyWeavers.xsd
 *.filters
 CMakeLists.txt
 .idea
+Makefile
