@@ -624,3 +624,6 @@ FodyWeavers.xsd
 CMakeLists.txt
 .idea
 Makefile
+test
+main
+
