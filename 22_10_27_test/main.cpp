@@ -146,6 +146,7 @@ using namespace std;
 //    b->fun();
 //    return 0;
 //}
+
 class Base
 {
 public:
@@ -156,6 +157,7 @@ public:
 private:
     int _b = 1;
 };
+
 int main()
 {
     Base b;
