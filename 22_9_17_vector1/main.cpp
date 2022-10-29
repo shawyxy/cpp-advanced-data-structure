@@ -140,8 +140,8 @@ int main()
 {
     test4();
 
-//    TestXyVector1();
-//    cout << "-------------"<< endl;
-//    TestXyVector2();
+    TestXyVector1();
+    cout << "-------------"<< endl;
+    TestXyVector2();
     return 0;
 }
