@@ -1,9 +1,11 @@
 #pragma once
 #include <iostream>
 #include <assert.h>
+#include <algorithm>
+#include <stdlib.h>
 using namespace std;
 
-// ¶¨Òå½áµãÀà
+// å®šä¹‰ç»“ç‚¹ç±»
 template <class K, class V>
 struct AVLTreeNode
 {
@@ -11,10 +13,10 @@ struct AVLTreeNode
 	AVLTreeNode<K, V>* _right;
 	AVLTreeNode<K, V>* _parent;
 
-	pair<K, V> _kv; // ¼üÖµ¶Ô
-	int _bf; // Æ½ºâÒò×Ó
+	pair<K, V> _kv; // é”®å€¼å¯¹
+	int _bf; // å¹³è¡¡å› å­
 
-	AVLTreeNode(const pair<K, V>& kv)// ¹¹Ôìº¯Êı
+	AVLTreeNode(const pair<K, V>& kv)// æ„é€ å‡½æ•°
 		:_left(nullptr)
 		, _right(nullptr)
 		, _parent(nullptr)
@@ -23,100 +25,100 @@ struct AVLTreeNode
 	{}
 };
 
-// AVLTreeÀà
+// AVLTreeç±»
 template <class K, class V>
-class AVLTree
+struct AVLTree
 {
 	typedef AVLTreeNode<K, V> Node;
 
 public:
 	bool Insert(const pair<K, V>& kv)
 	{
-		if (_root == nullptr) // ¿ÕÊ÷£¬Ö±½Ó²åÈë¼´¿É
+		if (_root == nullptr) // ç©ºæ ‘ï¼Œç›´æ¥æ’å…¥å³å¯
 		{
 			Node* newnode = new Node(kv);
 			_root = newnode;
 			return true;
 		}
 
-		// Ê÷·Ç¿Õ£¬¸ù¾İ¶ş²æËÑË÷Ê÷µÄ²éÕÒ¹æÔòÕÒµ½ÄÜ²åÈëµÄÎ»ÖÃ
-		Node* parent = nullptr;// ¶¨Òåparent±£´æcurµÄ¸¸½áµã
-		Node* cur = _root; // ´Ó¸ù½áµã¿ªÊ¼²éÕÒÎ»ÖÃ
+		// æ ‘éç©ºï¼Œæ ¹æ®äºŒå‰æœç´¢æ ‘çš„æŸ¥æ‰¾è§„åˆ™æ‰¾åˆ°èƒ½æ’å…¥çš„ä½ç½®
+		Node* parent = nullptr;// å®šä¹‰parentä¿å­˜curçš„çˆ¶ç»“ç‚¹
+		Node* cur = _root; // ä»æ ¹ç»“ç‚¹å¼€å§‹æŸ¥æ‰¾
 
 		while (cur)
 		{
-			if (kv.first < cur->_kv.first) // Èç¹û²ÎÊıµÄkey±ÈcurµÄkeyĞ¡
+			if (kv.first < cur->_kv.first) // å¦‚æœå‚æ•°çš„keyæ¯”curçš„keyå°
 			{
 				parent = cur;
-				cur = cur->_left; // Íù×ó×ÓÊ÷×ß
+				cur = cur->_left; // å¾€å·¦å­æ ‘èµ°
 			}
-			else if (kv.first > cur->_kv.first) // Èç¹û²ÎÊıµÄkey±ÈcurµÄkey´ó
+			else if (kv.first > cur->_kv.first) // å¦‚æœå‚æ•°çš„keyæ¯”curçš„keyå¤§
 			{
 
 				parent = cur;
-				cur = cur->_right;// ÍùÓÒ×ÓÊ÷×ß
+				cur = cur->_right;// å¾€å³å­æ ‘èµ°
 			}
-			else // ÏàµÈ
+			else // ç›¸ç­‰
 				return false;
 		}
 
-		// Ìø³öÑ­»·£¬ÒÑ¾­ÕÒµ½²åÈëµÄÎ»ÖÃ
-		// ´ËÊ±curÎª¿Õ£¬parentÊÇÒ¶×Ó½áµã
-		// ±È½Ï²ÎÊıkeyºÍÒ¶×Ó½áµãµÄkeyÒÔ×÷ÎªËüµÄ×ó»òÓÒº¢×Ó
+		// è·³å‡ºå¾ªç¯ï¼Œå·²ç»æ‰¾åˆ°æ’å…¥çš„ä½ç½®
+		// æ­¤æ—¶curä¸ºç©ºï¼Œparentæ˜¯å¶å­ç»“ç‚¹,å°†curæ›´æ–°ä¸ºæ’å…¥ç»“ç‚¹
+		// æ¯”è¾ƒå‚æ•°keyå’Œå¶å­ç»“ç‚¹çš„keyä»¥ä½œä¸ºå®ƒçš„å·¦æˆ–å³å­©å­
 		cur = new Node(kv);
-		if (kv.first < parent->_kv.first) // ²ÎÊıkey¸üĞ¡
+		if (kv.first < parent->_kv.first) // å‚æ•°keyæ›´å°
 		{
-			//parent->_left = new Node(kv); // ĞÂ½áµã×÷ÎªÒ¶×Ó½áµãµÄ×óº¢×Ó
+			//parent->_left = new Node(kv); // æ–°ç»“ç‚¹ä½œä¸ºå¶å­ç»“ç‚¹çš„å·¦å­©å­
 			parent->_left = cur;
 		}
 		else
 		{
-			//parent->_right = new Node(kv); // ĞÂ½áµã×÷ÎªÒ¶×Ó½áµãµÄÓÒº¢×Ó
+			//parent->_right = new Node(kv); // æ–°ç»“ç‚¹ä½œä¸ºå¶å­ç»“ç‚¹çš„å³å­©å­
 			parent->_right = cur;
 		}
-		// ²åÈëÍê±Ï
-		// ´ÓĞÂ²åÈëµÄ½áµãµÄ¸¸½áµãµÄ×æÏÈ½ÚµãÂ·¾¶ÍùÉÏ¸üĞÂ
+		// æ’å…¥å®Œæ¯•
+		// ä»æ–°æ’å…¥çš„ç»“ç‚¹çš„çˆ¶ç»“ç‚¹çš„ç¥–å…ˆèŠ‚ç‚¹è·¯å¾„å¾€ä¸Šæ›´æ–°
 		cur->_parent = parent;
-		// ¸üĞÂÆ½ºâÒò×Ó
+		// æ›´æ–°å¹³è¡¡å› å­
 		while (parent)
 		{
-			if (parent->_right == cur) // ²åÈëÔÚÓÒ±ß£¬bf+1
+			if (parent->_right == cur) // æ’å…¥åœ¨å³è¾¹ï¼Œbf+1
 			{
 				parent->_bf++;
 			}
-			else // ²åÈëÔÚ×ó±ß£¬bf-1
+			else // æ’å…¥åœ¨å·¦è¾¹ï¼Œbf-1
 			{
 				parent->_bf--;
 			}
 
-			if (parent->_bf == 0) // Ö±µ½·ûºÏAVLÊ÷µÄ¹æÔòÍ£Ö¹
+			if (parent->_bf == 0) // ç›´åˆ°ç¬¦åˆAVLæ ‘çš„è§„åˆ™åœæ­¢
 			{
 				break;
 			}
-			else if (abs(parent->_bf) == 1) // ÍùÉÏµ÷Õû
+			else if (abs(parent->_bf) == 1) // å¾€ä¸Šè°ƒæ•´
 			{
 				parent = parent->_parent;
 				cur = cur->_parent;
 			}
-			else if (abs(parent->_bf) == 2) // ²»Æ½ºâ
+			else if (abs(parent->_bf) == 2) // ä¸å¹³è¡¡
 			{
 				if (parent->_bf == 2 && cur->_bf == 1)
 				{
-					RotateL(parent); // ×óµ¥Ğı
+					RotateL(parent); // å·¦å•æ—‹
 				}
 				else if (parent->_bf == -2 && cur->_bf == -1)
 				{
-					RotateR(parent); // ÓÒµ¥Ğı
+					RotateR(parent); // å³å•æ—‹
 				}
 				else if (parent->_bf == -2 && cur->_bf == 1)
 				{
-					RotateLR(parent); // ×óÓÒË«Ğı
+					RotateLR(parent); // å·¦å³åŒæ—‹
 				}
 				else if (parent->_bf == 2 && cur->_bf == -1)
 				{
-					RotateLR(parent); // ÓÒ×óË«Ğı
+					RotateRL(parent); // å³å·¦åŒæ—‹
 				}
-				else // ËµÃ÷»¹Ã»²åÈëÖ®Ç°Ê÷¾ÍÒÑ¾­ÓĞÎÊÌâÁË
+				else // è¯´æ˜è¿˜æ²¡æ’å…¥ä¹‹å‰æ ‘å°±å·²ç»æœ‰é—®é¢˜äº†
 				{
 					assert(false);
 				}
@@ -129,88 +131,157 @@ public:
 		}
 		return true;
 	}
-	// ÖĞĞò±éÀúº¯Êı
+	// ä¸­åºéå†å‡½æ•°
 	void InOrder() 
 	{
 		_InOrder(_root);
 		cout << endl;
 	}
+    // éªŒè¯å¹³è¡¡å› å­æ˜¯å¦æ­£ç¡®
+    bool IsBalance()
+    {
+        return _IsBalance(_root);
+    }
 private:
-	// ÓÒµ¥Ğıº¯Êı
+	// å³å•æ—‹å‡½æ•°
 	void RotateR(Node* parent)
 	{
 		Node* subL = parent->_left;
 		Node* subLR = subL->_right;
-		Node* pParent = parent->_parent; // ±£´æ¸¸½áµãµÄ¸¸½áµã
+		Node* pParent = parent->_parent; // ä¿å­˜çˆ¶ç»“ç‚¹çš„çˆ¶ç»“ç‚¹
 
-		parent->_left = subLR; // ÖØ½¨subLRºÍparentÁªÏµ
+		parent->_left = subLR; // é‡å»ºsubLRå’Œparentè”ç³»
 		if (subLR != nullptr)
 		{
 			subLR->_parent = parent;
 		}
 
-		subL->_right = parent;// ÖØ½¨subLºÍparentÁªÏµ
+		subL->_right = parent;// é‡å»ºsubLå’Œparentè”ç³»
 		parent->_parent = subL;
 
 
-		if (parent == _root) // ¸¸½áµãÎª¸ù½áµã£¬Ğı×ªºóµÄsubR×÷Îª¸ù½áµã£¬ÎŞ¸¸½áµã
+		if (parent == _root) // çˆ¶ç»“ç‚¹ä¸ºæ ¹ç»“ç‚¹ï¼Œæ—‹è½¬åçš„subLä½œä¸ºæ ¹ç»“ç‚¹ï¼Œæ— çˆ¶ç»“ç‚¹
 		{
 			_root = subL;
 			subL->_parent = nullptr;
 		}
-
-		if (pParent->_left == parent)
-		{
-			pParent->_left = subL;
-		}
 		else
 		{
-			pParent->_right = subL;
-		}
+			if (pParent->_left == parent)
+			{
+				pParent->_left = subL;
+			}
+			else
+			{
+				pParent->_right = subL;
+			}
 
-		subL->_bf = 0; // ¸üĞÂÆ½ºâÒò×Ó
-		parent->_bf = 0;
+            subL->_parent = pParent;
+		}
+        subL->_bf = 0; // æ›´æ–°å¹³è¡¡å› å­
+        parent->_bf = 0;
 	}
-	// ×óµ¥Ğıº¯Êı
+	// å·¦å•æ—‹å‡½æ•°
 	void RotateL(Node* parent)
 	{
 		Node* subR = parent->_right;
 		Node* subRL = subR->_left;
-		Node* pParent = parent->_parent; // ±£´æ¸¸½áµãµÄ¸¸½áµã
+		Node* pParent = parent->_parent; // ä¿å­˜çˆ¶ç»“ç‚¹çš„çˆ¶ç»“ç‚¹
 
-		parent->_right = subRL; // ÖØ½¨subRLºÍparentÁªÏµ
+		parent->_right = subRL; // é‡å»ºsubRLå’Œparentè”ç³»
 		if (subRL != nullptr)
 		{
 			subRL->_parent = parent;
 		}
 
-		subR->_left = parent;// ÖØ½¨subRºÍparentÁªÏµ
+		subR->_left = parent;// é‡å»ºsubRå’Œparentè”ç³»
 		parent->_parent = subR;
 
 
-		if (parent == _root) // ¸¸½áµãÎª¸ù½áµã£¬Ğı×ªºóµÄsubR×÷Îª¸ù½áµã£¬ÎŞ¸¸½áµã
+		if (parent == _root) // çˆ¶ç»“ç‚¹ä¸ºæ ¹ç»“ç‚¹ï¼Œæ—‹è½¬åçš„subRä½œä¸ºæ ¹ç»“ç‚¹ï¼Œæ— çˆ¶ç»“ç‚¹
 		{
 			_root = subR;
 			subR->_parent = nullptr;
 		}
-
-		if (pParent->_left == parent)
-		{
-			pParent->_left = subR;
-		}
 		else
 		{
-			pParent->_right = subR;
-		}
+			if (pParent->_left == parent)
+			{
+				pParent->_left = subR;
+			}
+			else
+			{
+				pParent->_right = subR;
+			}
 
-		subR->_bf = 0; // ¸üĞÂÆ½ºâÒò×Ó
-		parent->_bf = 0;
+            subR->_parent = pParent;
+		}
+        subR->_bf = 0; // æ›´æ–°å¹³è¡¡å› å­
+        parent->_bf = 0;
 	}
-	// ×óÓÒË«Ğıº¯Êı
-	void RotateLR(Node* parent);
-	// ÓÒ×óË«Ğıº¯Êı
-	void RotateRL(Node* parent);
-	// ÖĞĞò±éÀú×Óº¯Êı
+	// å·¦å³åŒæ—‹å‡½æ•°
+	void RotateLR(Node* parent)
+    {
+        Node* subL = parent->_left;
+        Node* subLR = subL->_right;
+        int bf = subLR->_bf;
+
+        RotateL(subL);
+        RotateR(parent);
+
+        if(bf == -1)
+        {
+            subL->_bf = 0;
+            subLR->_bf = 0;
+            parent->_bf = 1;
+        }
+        else if(bf == 1)
+        {
+            subL->_bf = -1;
+            subLR->_bf = 0;
+            parent->_bf = 0;
+        }
+        else if(bf == 0)
+        {
+            subL->_bf = 0;
+            subLR->_bf = 0;
+            parent->_bf = 0;
+        }
+        else
+            assert(false);
+    }
+	// å³å·¦åŒæ—‹å‡½æ•°
+	void RotateRL(Node* parent)
+    {
+        Node* subR = parent->_right;
+        Node* subRL = subR->_left;
+        int bf = subRL->_bf;
+
+        RotateR(subR);
+        RotateL(parent);
+
+        if(bf == -1)
+        {
+            subR->_bf = 1;
+            parent->_bf = 0;
+            subRL->_bf = 0;
+        }
+        else if(bf == 1)
+        {
+            subR->_bf = 0;
+            parent->_bf = -1;
+            subRL->_bf = 0;
+        }
+        else if(bf == 0)
+        {
+            subR->_bf = 0;
+            parent->_bf = 0;
+            subRL->_bf = 0;
+        }
+        else
+            assert(false);
+    }
+	// ä¸­åºéå†å­å‡½æ•°
 	void _InOrder(Node* root)
 	{
 		if (root == nullptr)
@@ -222,6 +293,36 @@ private:
 		cout << root->_kv.first << ":" << root->_kv.second << endl;
 		_InOrder(root->_right);
 	}
+    // éªŒè¯å¹³è¡¡å› å­ å­å‡½æ•°
+    bool _IsBalance(Node* root)
+    {
+        if(root == nullptr)
+        {
+            return false;
+        }
+
+        int leftH = Height(root->_left);
+        int rightH = Height(root->_right);
+        int diff = rightH - leftH;
+
+        if(diff != root->_bf)
+        {
+            cout << root->_kv.first << "å¹³è¡¡å› å­å¼‚å¸¸" << endl;
+            return false;
+        }
+
+        return abs(diff) < 2
+            && _IsBalance(root->_left)
+            && _IsBalance(root->_right);
+
+    }
+    int Height(Node* root)
+    {
+        if(root == nullptr)
+            return 0;
+
+        return max(Height(root->_left), Height(root->_right)) + 1;
+    }
 private:
 	Node* _root = nullptr;
 };
