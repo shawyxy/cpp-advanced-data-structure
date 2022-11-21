@@ -14,7 +14,7 @@ void TestAVLTree1()
 
 void TestAVLTree2()
 {
-    size_t N = 100000;
+    size_t N = 100000;                  // 使用随机数测试
     srand(time(0));
     AVLTree<int, int> t1;
     for (size_t i = 0; i < N; ++i)
