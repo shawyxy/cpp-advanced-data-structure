@@ -37,7 +37,7 @@ struct RBTreeNode
 };
 // 红黑树类
 template<class K, class V>
-class RBTree
+class BRTree
 {
 public:
     typedef RBTreeNode<K, V> Node;
@@ -162,39 +162,7 @@ public:
         }
         _root->_col = BLACK;                    // 不论根节点何种颜色,统一处理为黑色
     }
-    //中序遍历
-    void InOrder()
-    {
-        _InOrder(_root);
-        cout << endl;
-    }
-    //判断是否为红黑树
-    bool ISRBTree()
-    {
-        if (_root == nullptr)
-        {
-            return true;
-        }
 
-        if (_root->_col == RED)
-        {
-            cout << "error:根结点为红色" << endl;
-            return false;
-        }
-
-        // 以最左路径的黑色结点数做为的参考值
-        Node* cur = _root;
-        int BlackCount = 0;
-        while (cur)
-        {
-            if (cur->_col == BLACK)
-                BlackCount++;
-            cur = cur->_left;
-        }
-
-        int count = 0;
-        return _ISRBTree(_root, count, BlackCount);
-    }
 private:
     // 右单旋函数
     void RotateR(Node *parent)
@@ -273,6 +241,7 @@ private:
     {
         Node *subL = parent->_left;
         Node *subLR = subL->_right;
+        int bf = subLR->_bf;
 
         RotateL(subL);
         RotateR(parent);
@@ -282,43 +251,10 @@ private:
     {
         Node *subR = parent->_right;
         Node *subRL = subR->_left;
+        int bf = subRL->_bf;
 
         RotateR(subR);
         RotateL(parent);
-    }
-    //中序遍历子函数
-    void _InOrder(Node* root)
-    {
-        if (root == nullptr)
-            return;
-        _InOrder(root->_left);
-        cout << root->_kv.first << " ";
-        _InOrder(root->_right);
-    }
-    // ISRBTree的子函数
-    bool _ISRBTree(Node* root, int count, int BlackCount)
-    {
-        if (root == nullptr) // 该路径走到空
-        {
-            if (count != BlackCount) // 黑色结点数量和基准值不相等
-            {
-                cout << "error:黑色结点的数目不相等" << endl;
-                return false;
-            }
-            return true;
-        }
-
-        if (root->_col == RED && root->_parent->_col == RED)
-        {
-            cout << "error:存在连续的红色结点" << endl;
-            return false;
-        }
-        if (root->_col == BLACK)
-        {
-            count++;
-        }
-        return _ISRBTree(root->_left, count, BlackCount)
-               && _ISRBTree(root->_right, count, BlackCount);
     }
 private:
     Node *_root = nullptr;
