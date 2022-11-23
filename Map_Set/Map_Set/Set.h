@@ -1,3 +1,4 @@
+#pragma once
 #include "RBTree.h"
 namespace xy
 {
@@ -8,7 +9,7 @@ namespace xy
         {
             const K& operator()(const K& key)
             {
-                return key; // ä»¿å‡½æ•°è¿”å›žkey
+                return key; // ·Âº¯Êý·µ»Økey
             }
         };
     public:

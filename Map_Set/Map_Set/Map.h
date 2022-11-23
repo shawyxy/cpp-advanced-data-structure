@@ -1,13 +1,15 @@
+#pragma once
 #include "RBTree.h"
 namespace xy
 {
     template<class K, class V>
-    class map {
+    class map 
+    {
         struct MapKeyOfT
         {
             const K& operator()(const pair<K, V>& kv)
             {
-                return kv.first; // ä»¿å‡½æ•°å–å‡ºé”®å€¼Kå¹¶è¿”å›
+                return kv.first; // ·Âº¯ÊıÈ¡³ö¼üÖµK²¢·µ»Ø
             }
         };
     public:

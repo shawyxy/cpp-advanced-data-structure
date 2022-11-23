@@ -1,12 +1,3 @@
-//
-// Created by 肖越 on 2022/11/16.
-//
-
-#ifndef RBTREE_RBTREE_H
-#define RBTREE_RBTREE_H
-
-#endif //RBTREE_RBTREE_H
-
 #pragma once
 #include <iostream>
 using namespace std;
@@ -29,11 +20,11 @@ struct RBTreeNode
 
     T _data;                            // 数据
     RBTreeNode(const T& data)
-            : _left(nullptr)
-            , _right(nullptr)
-            , _parent(nullptr)
-            , _data(data)
-            , _col(RED)                 // 默认插入结点为红色
+        : _left(nullptr)
+        , _right(nullptr)
+        , _parent(nullptr)
+        , _data(data)
+        , _col(RED)                 // 默认插入结点为红色
     {}
 };
 // 红黑树类
@@ -44,7 +35,7 @@ public:
     typedef RBTreeNode<T> Node;
 
     // 插入函数
-    bool Insert(const T& kv)
+    bool Insert(const pair<K, V>& kv)
     {
         if (_root == nullptr)                   // 空树
         {
