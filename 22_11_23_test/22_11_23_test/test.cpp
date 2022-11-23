@@ -5,7 +5,7 @@
 #include <string>
 using namespace std;
 
-void unordered_map_test1()
+void unordered_set_test1()
 {
 	unordered_set<int> us1;							 // 构造int类型的空容器
 
@@ -14,7 +14,7 @@ void unordered_map_test1()
 	
 	unordered_set<int> us3(us1);					 // 拷贝构造
 }
-void unordered_map_test2()
+void unordered_set_test2()
 {
 	unordered_set<int> us;
 
@@ -51,9 +51,109 @@ void unordered_map_test2()
 
 	cout << us.empty() << endl;
 }
+void unordered_set_test3()
+{
+	unordered_multiset<int> ums;
+
+	ums.insert(1);
+	ums.insert(1);
+	ums.insert(2);
+	ums.insert(7);
+	ums.insert(5);
+	ums.insert(4);
+	ums.insert(2);
+
+	for(auto e : ums)
+	{
+		cout << e << " ";
+	}
+	cout << endl;
+
+}
+void unordered_map_test()
+{
+	unordered_map<int, string> um;
+
+	um.insert(make_pair(1, "一"));
+	um.insert(make_pair(1, "一")); 
+	um.insert(make_pair(2, "二")); 
+	um.insert(make_pair(4, "四")); 
+	um.insert(make_pair(3, "三")); 
+
+	for (auto e : um)
+	{
+		cout << e.first << " ";
+	}
+	cout << endl;
+}
+void unordered_map_test1()
+{
+	unordered_map<int, string> um1; // 构造一个键值对为<int, string>的空容器
+
+	unordered_map<int, string> um2(um1.begin(), um1.end()); // 迭代器区间构造
+
+	unordered_map<int, string> um3(um1); // 拷贝构造
+}
+void unordered_map_test2()
+{
+	unordered_map<int, string> um;
+	um.insert(make_pair(1, "一"));
+	um.insert(make_pair(2, "二"));
+	um.insert(make_pair(3, "三"));
+	um.insert(make_pair(4, "四"));
+
+	// 迭代器遍历
+	unordered_map<int, string>::iterator it = um.begin();
+	while (it != um.end())
+	{
+		cout << "<" << it->first << ", " << it->second << ">" << endl;
+		it++;
+	}
+	cout << endl;
+
+	// 删除key=2的元素
+	um.erase(2);
+
+	for (auto e : um)
+	{
+		cout << "<" << e.first << ", " << e.second << ">" << endl;
+	}
+	cout << endl;
+
+	// 查找key=3的元素
+	auto pos = um.find(3);
+	if(pos != um.end())
+	{
+		cout << "<" << pos->first << ", " << pos->second << ">" << endl;
+	}
+
+	// 清空容器
+	um.clear();
+	// 容器判空
+	cout << um.empty() << endl;
+}
+void unordered_multimap_test()
+{
+	unordered_multimap<int, string> umm;
+	umm.insert(make_pair(1, "一"));
+	umm.insert(make_pair(1, "first"));
+	umm.insert(make_pair(1, "one"));
+	for (auto e : umm)
+	{
+		cout << "<" << e.first << ", " << e.second << ">" << endl;
+	}
+	cout << endl;
+}
+
 int main()
 {
+	//unordered_set_test1();
+	//unordered_set_test2();
+	//unordered_set_test3();
 	//unordered_map_test1();
-	unordered_map_test2();
+	//unordered_map_test2();
+	unordered_multimap_test();
+
+
 	return 0;
 }
