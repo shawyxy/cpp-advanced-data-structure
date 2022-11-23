@@ -17,37 +17,39 @@ enum Color // 使用枚举
     BLACK
 };
 // 红黑树结点类
-template<class K, class V>
+//template<class K, class V> [旧]
+template<class T>
 struct RBTreeNode
 {
-    RBTreeNode<K, V>* _left;
-    RBTreeNode<K, V>* _right;
-    RBTreeNode<K, V>* _parent;
+    RBTreeNode<T>* _left;
+    RBTreeNode<T>* _right;
+    RBTreeNode<T>* _parent;
 
     Color _col;                         // 颜色
-    pair<K, V> _kv;
 
-    RBTreeNode(const pair<K, V>& kv)
+    T _data;                            // 数据
+    RBTreeNode(const T& data)
             : _left(nullptr)
             , _right(nullptr)
             , _parent(nullptr)
-            , _kv(kv)
+            , _data(data)
             , _col(RED)                 // 默认插入结点为红色
     {}
 };
 // 红黑树类
-template<class K, class V>
-class BRTree
+template<class K, class T>
+class RBTree
 {
 public:
-    typedef RBTreeNode<K, V> Node;
+    typedef RBTreeNode<T> Node;
 
     // 插入函数
-    bool Insert(const pair<K, V>& kv)
+    bool Insert(const T& kv)
     {
         if (_root == nullptr)                   // 空树
         {
             _root = new Node(kv);
+            _root->_col = BLACK;
             return true;
         }
 
@@ -88,19 +90,19 @@ public:
                                                 // 检查并调整颜色
         while (parent && parent->_col == RED)   // 父结点非空且为红,说明它是子树的根结点
         {
-            Node *grandfather = parent->_parent;// 祖父结点
+            Node *grandparent = parent->_parent;// 祖父结点
                                                 // parent的位置分两种情况
-            if (parent == grandfather->_left)   // (1). 父结点是祖父节点的左孩子
+            if (parent == grandparent->_left)   // (1). 父结点是祖父节点的左孩子
             {
-                Node *uncle = grandfather->_right; // 叔叔就是祖父节点的另一个孩子
+                Node *uncle = grandparent->_right; // 叔叔就是祖父节点的另一个孩子
                 if (uncle != nullptr && uncle->_col == RED) // 情况1:叔叔存在且为红
                 {
                     parent->_col = BLACK;       // 父结点变黑
                     uncle->_col = BLACK;        // 叔叔结点变黑
-                    grandfather->_col = RED;    // 祖父结点变红
+                    grandparent->_col = RED;    // 祖父结点变红
 
-                    cur = parent;
-                    parent = parent->_parent;   // 继续向上处理
+                    cur = grandparent;
+                    parent = cur->_parent;      // 继续向上处理
                 }
                 else                            // 跳出了上面的判断,有两种有效组合:叔叔为空,叔叔为黑
                 {
@@ -110,10 +112,10 @@ public:
                                                 // cur                     u
                     if (cur == parent->_left)   // cur是parent的左子树
                     {
-                        RotateR(grandfather);  // 以祖父结点为轴心右旋
+                        RotateR(grandparent);   // 以祖父结点为轴心右旋
 
                         parent->_col = BLACK;   // 父节点变黑
-                        grandfather->_col = RED;// 祖父结点变黑
+                        grandparent->_col = RED;// 祖父结点变黑
                     }
                     else                        // cur是parent的右子树
                     {
@@ -121,39 +123,40 @@ public:
                                                 //    g   左右旋     c
                                                 //  p   u  -->    p   g
                                                 //    c                 u
-                        RotateR(grandfather); // 以祖父结点为轴心右旋
+                        RotateR(grandparent);   // 以祖父结点为轴心右旋
 
-                        parent->_col = RED;     // 父节点变黑
-                        grandfather->_col = BLACK; // 祖父结点变黑
+                        grandparent->_col = RED;     // 父节点变黑
+                        cur->_col = BLACK; // 祖父结点变黑
                     }
                     break;                      // 旋转后子树根节点变黑,停止向上调整
                 }
             }
             else                                // (2). 父结点是祖父节点的右孩子,步骤相同
             {
-                Node *uncle = grandfather->_left;
+                Node *uncle = grandparent->_left;
                 if (uncle && uncle->_col == RED)
                 {
-                    uncle->_col = parent->_col = BLACK;
-                    grandfather->_col = RED;
+                    uncle->_col = BLACK;
+                    parent->_col = BLACK;
+                    grandparent->_col = RED;
 
-                    cur = grandfather;
+                    cur = grandparent;
                     parent = cur->_parent;
                 }
                 else
                 {
                     if (cur == parent->_left)
                     {
-                        RotateRL(grandfather);
+                        RotateRL(grandparent);
 
                         cur->_col = BLACK;
-                        grandfather->_col = RED;
+                        grandparent->_col = RED;
                     }
                     else
                     {
-                        RotateL(grandfather);
+                        RotateL(grandparent);
 
-                        grandfather->_col = RED;
+                        grandparent->_col = RED;
                         parent->_col = BLACK;
                     }
                     break;
@@ -161,8 +164,41 @@ public:
             }
         }
         _root->_col = BLACK;                    // 不论根节点何种颜色,统一处理为黑色
+        return true;
     }
+    //中序遍历
+    void InOrder()
+    {
+        _InOrder(_root);
+        cout << endl;
+    }
+    //判断是否为红黑树
+    bool ISRBTree()
+    {
+        if (_root == nullptr)
+        {
+            return true;
+        }
 
+        if (_root->_col == RED)
+        {
+            cout << "error:根结点为红色" << endl;
+            return false;
+        }
+
+        // 以最左路径的黑色结点数做为的参考值
+        Node* cur = _root;
+        int BlackCount = 0;
+        while (cur)
+        {
+            if (cur->_col == BLACK)
+                BlackCount++;
+            cur = cur->_left;
+        }
+
+        int count = 0;
+        return _ISRBTree(_root, count, BlackCount);
+    }
 private:
     // 右单旋函数
     void RotateR(Node *parent)
@@ -240,8 +276,6 @@ private:
     void RotateLR(Node *parent)
     {
         Node *subL = parent->_left;
-        Node *subLR = subL->_right;
-        int bf = subLR->_bf;
 
         RotateL(subL);
         RotateR(parent);
@@ -250,11 +284,43 @@ private:
     void RotateRL(Node *parent)
     {
         Node *subR = parent->_right;
-        Node *subRL = subR->_left;
-        int bf = subRL->_bf;
 
         RotateR(subR);
         RotateL(parent);
+    }
+    //中序遍历子函数
+    void _InOrder(Node* root)
+    {
+        if (root == nullptr)
+            return;
+        _InOrder(root->_left);
+        cout << root->_kv.first << " ";
+        _InOrder(root->_right);
+    }
+    // ISRBTree的子函数
+    bool _ISRBTree(Node* root, int count, int BlackCount)
+    {
+        if (root == nullptr) // 该路径走到空
+        {
+            if (count != BlackCount) // 黑色结点数量和基准值不相等
+            {
+                cout << "error:黑色结点的数目不相等" << endl;
+                return false;
+            }
+            return true;
+        }
+
+        if (root->_col == RED && root->_parent->_col == RED)
+        {
+            cout << "error:存在连续红色结点" << endl;
+            return false;
+        }
+        if (root->_col == BLACK)
+        {
+            count++;
+        }
+        return _ISRBTree(root->_left, count, BlackCount)
+               && _ISRBTree(root->_right, count, BlackCount);
     }
 private:
     Node *_root = nullptr;
