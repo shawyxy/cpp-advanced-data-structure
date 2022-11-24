@@ -15,6 +15,6 @@ namespace xy
     public:
 
     private:
-        RBTree<K, K> _t;
+        RBTree<K, K, SetKeyOfT> _t;
     };
 }

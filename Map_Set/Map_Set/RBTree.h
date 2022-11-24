@@ -42,7 +42,50 @@ struct __RBTreeIterator
         :_node(node)            // 由指针构造一个正向迭代器对象
     {}
 
-    // *operator
+    // 解引用操作符
+    Ref operator*()
+    {
+        return _node->_data;
+    }
+    // 成员访问操作符
+    Ptr operator->()
+    {
+        return *_node->data;
+    }
+    // == 和 !=
+    bool operator==(const Self& s) const
+    {
+        return _node == s._node;
+    }
+    bool operator!=(const Self& s) const
+    {
+        return _node != s._node;
+    }
+    // 前置++
+    Self operator++()
+    {
+        if(_node->_right) // 当前结点右子树不为空
+        {
+            Node* left = _node->_left; // 找当前结点右子树中最左结点
+            while(left->_left)
+            {
+                left = left->_left;
+            }
+            // 找到了
+            _node = left; // 更新
+        }
+        else  // 当前节点右子树为空
+        {
+            Node* cur = _node;
+            Node* parent = cur->_parent;
+            while(parent && cur == parent->_right) // 孩子不在父亲右子树中的祖先
+            {
+                cur = parent;
+                parent = parent->_parent; // 向上迭代祖先结点
+            }
+        }
+    }
+
 };
 // 红黑树类
 template<class K, class T, class KeyOfT>
@@ -85,7 +128,7 @@ public:
             }
         }
                                                 // 跳出循环,说明找到插入的位置了
-        cur = new Node(kv);                     // 将cur更新为新插入结点
+        cur = new Node(data);                     // 将cur更新为新插入结点
         if (kot(cur->_data) < kot(parent->_data)) // 新结点值比叶子(父)结点小
         {
             parent->_left = cur;                // 作为父结点的左孩子插入

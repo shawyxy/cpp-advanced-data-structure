@@ -14,6 +14,6 @@ namespace xy
         };
     public:
     private:
-        RBTree<K, pair<K, V>> _t;
+        RBTree<K, pair<K, V>, MapKeyOfT> _t;
     };
 }
