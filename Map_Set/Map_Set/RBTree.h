@@ -27,6 +27,23 @@ struct RBTreeNode
         , _col(RED)                 // 默认插入结点为红色
     {}
 };
+
+template<class T, class Ptr, class Ref>
+struct __RBTreeIterator
+{
+    typedef RBTreeNode<T> Node;
+    typedef Ptr pointer; // 结点指针
+    typedef Ref reference; // 结点指针的引用
+    typedef __RBTreeIterator<T, Ptr, Ref> Self; // 正向迭代器的类型
+
+    Node* _node;
+    // 迭代器构造函数
+    __RBTreeIterator(Node *node)
+        :_node(node)            // 由指针构造一个正向迭代器对象
+    {}
+
+    // *operator
+};
 // 红黑树类
 template<class K, class T, class KeyOfT>
 class RBTree
@@ -34,27 +51,30 @@ class RBTree
 public:
     typedef RBTreeNode<T> Node;
 
+
     // 插入函数
-    bool Insert(const T& kv)
+    bool Insert(const T& data)
     {
         if (_root == nullptr)                   // 空树
         {
-            _root = new Node(kv);
+            _root = new Node(data);
             _root->_col = BLACK;
             return true;
         }
+
+        KeyOfT kot;
 
         Node *cur = _root;
         Node *parent = nullptr;
 
         while (cur)                             // 迭代,找到插入位置
         {
-            if (kv.first < cur->_kv.first)      // 插入的值比key值小
+            if (kot(data) < kot(cur->_data))      // 插入的值比key值小
             {
                 parent = cur;
                 cur = cur->_left;               // 往左走
             }
-            else if (kv.first > cur->_kv.first) // 插入的值比key值大
+            else if (kot(data) > kot(cur->data)) // 插入的值比key值大
             {
                 parent = cur;
                 cur = cur->_right;              // 往右走
@@ -66,7 +86,7 @@ public:
         }
                                                 // 跳出循环,说明找到插入的位置了
         cur = new Node(kv);                     // 将cur更新为新插入结点
-        if (cur->_kv.first < parent->_kv.first) // 新结点值比叶子(父)结点小
+        if (kot(cur->_data) < kot(parent->_data)) // 新结点值比叶子(父)结点小
         {
             parent->_left = cur;                // 作为父结点的左孩子插入
             cur->_parent = parent;
