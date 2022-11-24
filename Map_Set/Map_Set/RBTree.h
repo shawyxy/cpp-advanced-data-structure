@@ -28,14 +28,14 @@ struct RBTreeNode
     {}
 };
 // 红黑树类
-template<class K, class T>
+template<class K, class T, class KeyOfT>
 class RBTree
 {
 public:
     typedef RBTreeNode<T> Node;
 
     // 插入函数
-    bool Insert(const pair<K, V>& kv)
+    bool Insert(const T& kv)
     {
         if (_root == nullptr)                   // 空树
         {

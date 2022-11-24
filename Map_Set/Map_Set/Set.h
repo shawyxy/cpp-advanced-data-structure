@@ -9,7 +9,7 @@ namespace xy
         {
             const K& operator()(const K& key)
             {
-                return key; // 仿函数返回key
+                return key;         // 仿函数返回key
             }
         };
     public:
