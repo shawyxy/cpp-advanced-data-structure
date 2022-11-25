@@ -27,10 +27,10 @@ struct RBTreeNode
         , _col(RED)                 // 默认插入结点为红色
     {}
 };
-
+// 正向迭代器
 template<class T, class Ptr, class Ref>
 struct __RBTreeIterator
-        {
+{
     typedef RBTreeNode<T> Node;
     typedef Ptr pointer; // 结点指针
     typedef Ref reference; // 结点指针的引用
@@ -120,6 +120,52 @@ struct __RBTreeIterator
         return *this;
     }
 };
+// 反向迭代器
+template<class iterator>
+struct reverse_iterator
+{
+    typedef reverse_iterator<iterator> Self; // 
+    typedef typename iterator::reference Ref;
+    typedef typename iterator::pointer Ptr;
+
+    iterator _it;  // 用正向迭代器对象构造
+
+    // 构造函数
+    reverse_iterator(iterator it)
+        :_it(it) // 用正向迭代器对象构造一个反向迭代器对象
+    {}
+    // 解引用操作符
+    Ref operator*()
+    {
+        return *_it; // 返回正向迭代器指向的结点数据的引用
+    }
+    // 成员访问操作符
+    Ptr operator->()
+    {
+        return _it.opeartor->(); // 返回正向迭代器重载的operator->()
+    }
+    // 前置++
+    Self& operator++()
+    {
+        --_it;
+        return *this;
+    }
+    // 前置--
+    Self& operator--()
+    {
+        ++_it;
+        return *this;
+    }
+    bool operator!=(const Self& s) const
+    {
+        return _it != s._it;
+    }
+    bool operator==(const Self& s) const
+    {
+        return _it == s._it;
+    }
+};
+
 // 红黑树类
 template<class K, class T, class KeyOfT>
 class RBTree
