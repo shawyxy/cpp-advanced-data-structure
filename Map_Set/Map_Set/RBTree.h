@@ -32,8 +32,8 @@ template<class T, class Ptr, class Ref>
 struct __RBTreeIterator
 {
     typedef RBTreeNode<T> Node;
-    typedef Ptr pointer; // 结点指针
-    typedef Ref reference; // 结点指针的引用
+    typedef Ptr pointer;            // 结点指针
+    typedef Ref reference;          // 结点指针的引用
     typedef __RBTreeIterator<T, Ptr, Ref> Self; // 正向迭代器的类型
 
     Node *_node;
@@ -122,16 +122,16 @@ struct __RBTreeIterator
 };
 // 反向迭代器
 template<class iterator>
-struct reverse_iterator
+struct __RBTreeReverseIterator
 {
-    typedef reverse_iterator<iterator> Self; // 
-    typedef typename iterator::reference Ref;
-    typedef typename iterator::pointer Ptr;
+    typedef typename iterator::reference Ref; // 结点指针的引用
+    typedef typename iterator::pointer Ptr; // 结点指针
+    typedef __RBTreeReverseIterator<iterator> Self; // 反向迭代器类型
 
     iterator _it;  // 用正向迭代器对象构造
 
     // 构造函数
-    reverse_iterator(iterator it)
+    __RBTreeReverseIterator(iterator it)
         :_it(it) // 用正向迭代器对象构造一个反向迭代器对象
     {}
     // 解引用操作符
@@ -142,7 +142,7 @@ struct reverse_iterator
     // 成员访问操作符
     Ptr operator->()
     {
-        return _it.opeartor->(); // 返回正向迭代器重载的operator->()
+        return _it.operator->(); // 返回正向迭代器重载的operator->()
     }
     // 前置++
     Self& operator++()
@@ -173,15 +173,17 @@ class RBTree
     typedef RBTreeNode<T> Node; // 定义结点
 public:
     typedef __RBTreeIterator<T, T&, T*> iterator; // 定义正向迭代器
+    typedef __RBTreeReverseIterator<iterator> reverse_iterator; // 定义反向迭代器
+
 
     // 插入函数
-    bool Insert(const T& data)
+    pair<iterator, bool> Insert(const T& data)
     {
         if (_root == nullptr)                   // 空树
         {
             _root = new Node(data);
             _root->_col = BLACK;
-            return true;
+            return make_pair(iterator(_root), true);
         }
 
         KeyOfT kot;
@@ -203,11 +205,12 @@ public:
             }
             else                                // 找不到
             {
-                return false;
+                return make_pair(iterator(cur), false);
             }
         }
                                                 // 跳出循环,说明找到插入的位置了
-        cur = new Node(data);                     // 将cur更新为新插入结点
+        cur = new Node(data);                   // 将cur更新为新插入结点
+        Node* newnode = cur;                    // 保存新插入结点以便最后返回
         if (kot(cur->_data) < kot(parent->_data)) // 新结点值比叶子(父)结点小
         {
             parent->_left = cur;                // 作为父结点的左孩子插入
@@ -297,40 +300,29 @@ public:
             }
         }
         _root->_col = BLACK;                    // 不论根节点何种颜色,统一处理为黑色
-        return true;
+        return make_pair(iterator(newnode), true);
     }
-    //中序遍历
-    void InOrder()
+    // 查找函数
+    iterator Find(const K& key)
     {
-        _InOrder(_root);
-        cout << endl;
-    }
-    //判断是否为红黑树
-    bool ISRBTree()
-    {
-        if (_root == nullptr)
-        {
-            return true;
-        }
-
-        if (_root->_col == RED)
-        {
-            cout << "error:根结点为红色" << endl;
-            return false;
-        }
-
-        // 以最左路径的黑色结点数做为的参考值
         Node* cur = _root;
-        int BlackCount = 0;
+        KeyOfT kot;
         while (cur)
         {
-            if (cur->_col == BLACK)
-                BlackCount++;
-            cur = cur->_left;
+            if (key < kot(cur->_kv.first)) // key小于当前结点的key值
+            {
+                cur = cur->_left; // 在当前结点的左子树中查找
+            }
+            else if (key > kot(cur->_kv.first)) // key大于当前结点的key值
+            {
+                cur = cur->_right; // 在当前结点的右子树中查找
+            }
+            else // 找到了
+            {
+                return iterator(cur); // 返回当前结点的迭代器
+            }
         }
-
-        int count = 0;
-        return _ISRBTree(_root, count, BlackCount);
+        return end(); // 查找失败
     }
 private:
     // 右单旋函数
@@ -421,30 +413,33 @@ private:
         RotateR(subR);
         RotateL(parent);
     }
-    //中序遍历子函数
-    void _InOrder(Node* root)
+    // 迭代器相关
+    iterator begin()
     {
-        if (root == nullptr)
-            return;
-        _InOrder(root->_left);
-        cout << root->_kv.first << " ";
-        _InOrder(root->_right);
-    }
-   iterator begin()
-   {
         Node* cur = _root;
         while(cur && cur->_left) // 找最左结点
         {
             cur = cur->_left;
         }
         return iterator(cur); // 构造一个迭代器并返回
-   }
-   iterator end()
-   {
+    }
+    iterator end()
+    {
         return iterator(nullptr);
-   }
-
-
+    }
+    reverse_iterator rbegin()
+    {
+        Node* right = _root;
+        while (right&&right->_right) //寻找最右结点
+        {
+            right = right->_right;
+        }
+        return reverse_iterator(iterator(right));
+    }
+    reverse_iterator rend()
+    {
+        return reverse_iterator(iterator(nullptr));
+    }
 private:
     Node *_root = nullptr;
 };
