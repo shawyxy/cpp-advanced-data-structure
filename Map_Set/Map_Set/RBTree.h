@@ -30,16 +30,17 @@ struct RBTreeNode
 
 template<class T, class Ptr, class Ref>
 struct __RBTreeIterator
-{
+        {
     typedef RBTreeNode<T> Node;
     typedef Ptr pointer; // 结点指针
     typedef Ref reference; // 结点指针的引用
     typedef __RBTreeIterator<T, Ptr, Ref> Self; // 正向迭代器的类型
 
-    Node* _node;
+    Node *_node;
+
     // 迭代器构造函数
     __RBTreeIterator(Node *node)
-        :_node(node)            // 由指针构造一个正向迭代器对象
+            : _node(node)            // 由指针构造一个正向迭代器对象
     {}
 
     // 解引用操作符
@@ -47,27 +48,31 @@ struct __RBTreeIterator
     {
         return _node->_data;
     }
+
     // 成员访问操作符
     Ptr operator->()
     {
         return *_node->data;
     }
+
     // == 和 !=
-    bool operator==(const Self& s) const
+    bool operator==(const Self &s) const
     {
         return _node == s._node;
     }
-    bool operator!=(const Self& s) const
+
+    bool operator!=(const Self &s) const
     {
         return _node != s._node;
     }
+
     // 前置++
-    Self operator++()
+    Self& operator++()
     {
-        if(_node->_right) // 当前结点右子树不为空
+        if (_node->_right) // 当前结点右子树不为空
         {
-            Node* left = _node->_left; // 找当前结点右子树中最左结点
-            while(left->_left)
+            Node *left = _node->_right; // 找当前结点右子树中最左结点
+            while (left->_left)
             {
                 left = left->_left;
             }
@@ -76,24 +81,52 @@ struct __RBTreeIterator
         }
         else  // 当前节点右子树为空
         {
-            Node* cur = _node;
-            Node* parent = cur->_parent;
-            while(parent && cur == parent->_right) // 孩子不在父亲右子树中的祖先
+            Node *cur = _node;
+            Node *parent = cur->_parent;
+            while (parent && cur == parent->_right) // 孩子不在父亲右子树中的祖先
             {
                 cur = parent;
                 parent = parent->_parent; // 向上迭代祖先结点
             }
+            _node = parent; // 更新
         }
+        return *this; // 返回更新后的迭代器
     }
-
+    // 前置--
+    Self& operator--()
+    {
+        if(_node->_left) // 结点的左子树不为空
+        {
+            Node* right = _node->_left; // 找到当前结点左子树中最右结点
+            while(right->_right)
+            {
+                right = right->_right;
+            }
+            _node = right;
+            // 找到了
+            _node = right; // 更新
+        }
+        else // 当前结点左子树为空
+        {
+            Node* cur = _node;
+            Node* parent = cur->_parent;
+            while(parent && parent->_left) // 找孩子不在父亲的右子树中的祖先
+            {
+                cur = parent;
+                parent = parent->_parent;
+            }
+            _node = parent; // 更新
+        }
+        return *this;
+    }
 };
 // 红黑树类
 template<class K, class T, class KeyOfT>
 class RBTree
 {
+    typedef RBTreeNode<T> Node; // 定义结点
 public:
-    typedef RBTreeNode<T> Node;
-
+    typedef __RBTreeIterator<T, T&, T*> iterator; // 定义正向迭代器
 
     // 插入函数
     bool Insert(const T& data)
@@ -282,7 +315,7 @@ private:
             {
                 pParent->_left = subL;
             }
-            else
+           else
             {
                 pParent->_right = subL;
             }
@@ -351,31 +384,21 @@ private:
         cout << root->_kv.first << " ";
         _InOrder(root->_right);
     }
-    // ISRBTree的子函数
-    bool _ISRBTree(Node* root, int count, int BlackCount)
-    {
-        if (root == nullptr) // 该路径走到空
+   iterator begin()
+   {
+        Node* cur = _root;
+        while(cur && cur->_left) // 找最左结点
         {
-            if (count != BlackCount) // 黑色结点数量和基准值不相等
-            {
-                cout << "error:黑色结点的数目不相等" << endl;
-                return false;
-            }
-            return true;
+            cur = cur->_left;
         }
+        return iterator(cur); // 构造一个迭代器并返回
+   }
+   iterator end()
+   {
+        return iterator(nullptr);
+   }
 
-        if (root->_col == RED && root->_parent->_col == RED)
-        {
-            cout << "error:存在连续红色结点" << endl;
-            return false;
-        }
-        if (root->_col == BLACK)
-        {
-            count++;
-        }
-        return _ISRBTree(root->_left, count, BlackCount)
-               && _ISRBTree(root->_right, count, BlackCount);
-    }
+
 private:
     Node *_root = nullptr;
 };
