@@ -119,6 +119,19 @@ public:
 
             return true;
         }
+        // 删除函数
+        bool Erase(const K& key)
+        {
+            HashData<K, V>* find = Find(key);
+            if(find != nullptr)
+            {
+                find->_state = DELETE;
+                _size--;
+                return true;
+            }
+            return false;
+        }
+
         void Print()
         {
             for (size_t i = 0; i < _table.size(); ++i)
