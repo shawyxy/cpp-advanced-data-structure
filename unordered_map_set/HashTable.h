@@ -11,22 +11,73 @@ static const unsigned long MyPrimeList[__my__num_primes] =
                 1610612741, 3221225473, 4294967291
         };
 
-template<class K, class V>
+template<class T>
 struct HashNode
 {
-    pair<K, V> _kv;                 // 键值对,保存数据
-    HashNode<K, V>* _next;          // 后继指针
-    HashNode(const pair<K, V> kv)   // 结点构造函数
-        :_kv(kv)
+    T _data;                    // 保存数据
+    HashNode<T>* _next;         // 后继指针
+    HashNode(const T& data)     // 结点构造函数
+        :_data(data)
         , _next(nullptr)
     {}
 };
-
-template<class K, class V>
+template<class K>
+struct HashFunc
+{
+    size_t operator()(const K& key)
+    {
+        return (size_t)key;
+    }
+};
+// 模板的特化
+template<>
+struct HashFunc<string>
+{
+    size_t operator()(const string& s)
+    {
+        size_t value = 0;
+        for (auto ch : s)
+        {
+            value = value * 131 + ch;
+        }
+        return value;
+    }
+};
+template<class K, class T, class KeyOfT, class Hash = HashFunc<K>>
 class HashTable
 {
-    typedef HashNode<K, V> Node;
+    typedef HashNode<T> Node;
 public:
+    //构造函数
+    HashTable() = default; //显示指定生成默认构造函数
+    //拷贝构造函数
+    HashTable(const HashTable& ht)
+    {
+        _table.resize(ht._table.size());
+        for (size_t i = 0; i < ht._table.size(); i++)
+        {
+            if (ht._table[i])
+            {
+                Node* cur = ht._table[i];
+                while (cur)
+                {
+                    Node* copy = new Node(cur->_data);
+                    copy->_next = _table[i];
+                    _table[i] = copy;
+                    cur = cur->_next;
+                }
+            }
+        }
+        _size = ht._n;
+    }
+    //赋值运算符重载函数
+    HashTable& operator=(HashTable ht)
+    {
+        _table.swap(ht._table);
+        swap(_size, ht._size);
+        return *this;
+    }
+
     // 析构函数
     ~HashTable()
     {
@@ -43,7 +94,7 @@ public:
         }
     }
     // 查找函数
-    HashNode<K, V>* Find(const K& key)
+    HashNode<T>* Find(const K& key)
     {
         if(_table.size() == 0)
         {
@@ -51,7 +102,7 @@ public:
         }
 
         size_t pos = key % _table.size();   // 得到下标值
-        HashNode<K, V>* cur = _table[pos];  // 找到哈希桶首地址
+        HashNode<T>* cur = _table[pos];  // 找到哈希桶首地址
         while (cur)                         // 遍历链表
         {
             if (cur->_kv.first == key)
@@ -63,7 +114,7 @@ public:
         return nullptr;
     }
     // 插入函数
-    bool Insert(const pair<K, V>& kv)
+    bool Insert(const pair<K, T>& kv)
     {
         if(Find(kv.first) != nullptr) // 元素已经存在
         {

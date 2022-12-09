@@ -1,17 +1,20 @@
 #include "HashTable.h"
-template<class K, class V>
-class unordered_map
+namespace xy
 {
-    //仿函数
-    struct MapKeyOfT
+    template<class K, class V, class Hash = HashFunc<K>>
+    class unordered_map
     {
-        const K& operator()(const pair<K, V>& kv) //返回键值对当中的键值key
+        struct MapKeyOfT
         {
-            return kv.first;
-        }
+            const K& operator()(const pair<K, V>& kv)
+            {
+                return kv.first;
+            }
+        };
+    public:
+        // ...
+    private:
+        HashTable<K, pair<K, V>, MapKeyOfT> _ht;
     };
-public:
-    //...
-private:
-    HashTable<K, pair<K, V>, MapKeyOfT> _ht;
-};
+
+}
