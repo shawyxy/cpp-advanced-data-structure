@@ -21,6 +21,17 @@ struct HashNode
         , _next(nullptr)
     {}
 };
+//正向迭代器
+template<class K, class T, class KeyOfT>
+struct __HTIterator
+{
+    typedef HashNode<T> Node;   //哈希结点的类型
+    typedef HashTable<K, T, KeyOfT> HT; //哈希表的类型
+    typedef __HTIterator<K, T, KeyOfT> Self; //正向迭代器的类型
+
+    Node* _node; //结点指针
+    HT* _pht; //哈希表的地址
+};
 template<class K>
 struct HashFunc
 {
@@ -77,7 +88,6 @@ public:
         swap(_size, ht._size);
         return *this;
     }
-
     // 析构函数
     ~HashTable()
     {
