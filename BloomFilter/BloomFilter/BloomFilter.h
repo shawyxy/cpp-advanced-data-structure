@@ -44,3 +44,44 @@ struct DJBHash
 		return value;
 	}
 };
+
+template<size_t N,
+class K = string, class Hash1 = BKDRHash, class Hash2 = APHash, class Hash3 = DJBHash>
+class BloomFilter
+{
+public:
+	void Set(const K& key)
+	{
+		size_t hash1 = Hash1()(key) % N;
+		size_t hash2 = Hash2()(key) % N;
+		size_t hash3 = Hash3()(key) % N;
+
+		_bs.set(hash1);
+		_bs.set(hash2);
+		_bs.set(hash3);
+	}
+	bool Test(const K& key)
+	{
+		size_t hash1 = Hash1()(key) % N;
+		if (_bs.test(hash1) == false)
+		{
+			return false;				// 准确
+		}
+
+		size_t hash2 = Hash2()(key) % N;
+		if (_bs.test(hash2) == false)
+		{
+			return false;				// 准确
+		}
+
+		size_t hash3 = Hash3()(key) % N;
+		if (_bs.test(hash3) == false)
+		{
+			return false;				// 准确
+		}
+
+		return true;					// 可能误判
+	}
+private:
+	bitset<N> _bs;
+};
